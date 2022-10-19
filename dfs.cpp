@@ -6,12 +6,24 @@ vector<int> g[N];
 bool vis[N];
 
 void dfs(int vertex){
+	/* Take action on vertex after entering 
+	   the vertex
+	*/
 	vis[vertex] = true;
 	for(auto child : g[vertex]){
+		/* Take Action on child before entering 
+		   the child node
+		*/
 		if(vis[child]) 
 			continue;
 		dfs(child);
+		/* Take action on child after exiting 
+		   child node
+		*/
 	}
+	/* Take action on vertex before exiting
+	   the vertex
+	*/
 }
 
 int main(){
