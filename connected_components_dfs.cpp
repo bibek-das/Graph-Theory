@@ -25,10 +25,9 @@ int main(){
 		adj[v2].push_back(v1);
 	}
 	for(int i = 1; i <= v; i++){
-		if(!vis[i]){
-			dfs(i);
-			cnt++;
-		}
+		if(vis[i]) continue;
+		dfs(i);
+		cnt++;
 	}
 	cout << cnt << endl;
 }
