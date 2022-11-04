@@ -13,7 +13,6 @@ void bfs(int source){
 	vis[source] = true;
 	while(!que.empty()){
 		int par = que.front();
-		cout << par << " ";
 		que.pop();
 		for(auto x : adj[par]){
 			if(vis[x]) continue;
