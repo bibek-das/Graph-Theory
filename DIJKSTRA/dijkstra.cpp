@@ -1,69 +1,42 @@
-//Adonis!!
 #include<bits/stdc++.h>
 using namespace std;
+#define ll long long
 
-const int N = 1000;
-const int INF = 1e9 + 10;
-vector<int> dist(N, INF);
-vector<pair<int, int>> graph[N];
-bool vis[N];
+const int N = 3*1e5;
+vector<pair<ll,ll>> g[N];
+const ll INF = LONG_MAX;
+vector<ll> dist(N,INF);
 
-void dijkstra(int src) {
-    
-    set<pair<int, int>> st;
-    st.insert({0, src});
-    dist[src] = 0;
-    while (st.size() > 0) {
-        auto node = *st.begin();
-        int v = node.second;
-        int dist_v = node.first;
-        st.erase(st.begin());
-        if (vis[v]) continue;
-        vis[v] = true;
-        for (auto child : graph[v]) {
-            int child_v = child.first;
-            int wt = child.second;
-            if (dist[v] + wt < dist[child_v]) {
-                dist[child_v] = dist[v] + wt;
-                st.insert({dist[child_v], child_v});
-            }
-        }
-    }
+void dijkstra(ll src){
+	priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq;
+	pq.push({0,src});
+	dist[src] = 0;
+	while(!pq.empty()){
+		ll node = pq.top().second;
+		ll cost = pq.top().first;
+		pq.pop();
+		if(dist[node] < cost) continue;
+		for(auto child : g[node]){
+			ll child_v = child.first;
+			ll wt = child.second;
+			if(dist[node] + wt < dist[child_v]){
+				dist[child_v] = dist[node] + wt;
+				pq.push({dist[child_v],child_v});
+			}
+		}
+	}
 }
 
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int t, cs = 1;
-    cin >> t;
-    while (t--) {
-        int v, e;
-        cin >> v >> e;
-        while (e--) {
-            int v1, v2, wt;
-            cin >> v1 >> v2 >> wt;
-            graph[v1].push_back({v2, wt});
-            graph[v2].push_back({v1, wt});
-        }
-        int source;
-        cin >> source;
-        dijkstra(source);
-        cout << "Case " << cs << ":" << endl;
-        for (int i = 0; i < v; i++) {
-            if (dist[i] == INF) cout << "Impossible" << endl;
-            else cout << dist[i] << endl;
-        }
-        for (int i = 0; i < N; i++) {
-            dist[i] = INF;
-        }
-        memset(vis, 0, sizeof(vis));
-        for (auto x : graph) {
-            x.clear();
-        }
-        cs++;
-    }
-
-    return 0;
+int main(){
+	ll v,e;
+	cin >> v >> e;
+	for(int i = 0;i < e;i++){
+		ll u, v, wt;
+		cin >> u >> v >> wt;
+		g[u].push_back({v,wt});
+	}
+	dijkstra(1);
+	for(int i = 1;i <= v;i++){
+		cout << dist[i] << " \n"[i == v];
+	}
 }
